@@ -80,7 +80,7 @@ final blokKacisiConfig = GameConfig(
       'Tìm thứ tự, đưa hết ra ngoài!',
       'Hanapin ang ayos, ilabas silang lahat!',
     ],
-  seedColor: const Color(0xFF26A69A),
+  seedColor: const Color(0xFFB5563A),
   icon: Icons.open_in_new_rounded,
   rules: EscapeRules(),
   buildPlay: (ctx) => EscapeView(ctx: ctx),
