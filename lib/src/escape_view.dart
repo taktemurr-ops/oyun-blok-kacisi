@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:studio_core/core/strings.dart';
 import 'package:studio_core/app/game_api.dart';
 import 'package:studio_core/app/services/audio.dart';
 import 'package:studio_core/core/game_rules.dart';
@@ -28,7 +29,6 @@ class _EscapeViewState extends State<EscapeView> {
   double _cell = 40;
 
   PlayContext get ctx => widget.ctx;
-  bool get _tr => ctx.lang == 'tr';
 
   @override
   void initState() {
@@ -105,7 +105,7 @@ class _EscapeViewState extends State<EscapeView> {
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           child: Row(children: [
             Expanded(
-              child: Text(_tr ? 'Kalan blok: ${game.blocks.length}' : 'Blocks left: ${game.blocks.length}',
+              child: Text(Strings.tx(ctx.lang, 'Kalan blok: {0}', 'Blocks left: {0}', [game.blocks.length]),
                   style: Theme.of(context).textTheme.titleSmall),
             ),
             if (left != null) ...[const Icon(Icons.touch_app_outlined, size: 18), Text(' $left  ')],
