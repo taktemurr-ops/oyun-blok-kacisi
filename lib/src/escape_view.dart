@@ -13,15 +13,29 @@ import 'escape_rules.dart';
 
 final Map<StudioLook, ThemeData> _studioThemes = {};
 
-class EscapeView extends StatefulWidget {
+/// Oyun ekranı: düğmeler, çipler, üst bilgi ve pencereler onaylı koyu
+/// tasarımda (merkezin paleti, studio-core StudioLook); tahta çizimi kendi
+/// renklerini korur.
+class EscapeView extends StatelessWidget {
   final PlayContext ctx;
   const EscapeView({super.key, required this.ctx});
 
   @override
-  State<EscapeView> createState() => _EscapeViewState();
+  Widget build(BuildContext context) {
+    final look = StudioLook.of(context);
+    return Theme(data: _studioThemes[look] ??= buildStudioTheme(look), child: EscapeViewBody(ctx: ctx));
+  }
 }
 
-class _EscapeViewState extends State<EscapeView> {
+class EscapeViewBody extends StatefulWidget {
+  final PlayContext ctx;
+  const EscapeViewBody({super.key, required this.ctx});
+
+  @override
+  State<EscapeViewBody> createState() => _EscapeViewState();
+}
+
+class _EscapeViewState extends State<EscapeViewBody> {
   late EscapeLevel level;
   late EscapeGame game;
   int? _hint;
@@ -98,15 +112,8 @@ class _EscapeViewState extends State<EscapeView> {
     _persist();
   }
 
-  /// Oyun içi düğmeler, çipler ve yazılar onaylı koyu tasarımda (merkezin
-  /// paleti); tahta çizimi kendi renklerini korur.
   @override
   Widget build(BuildContext context) {
-    final look = StudioLook.of(context);
-    return Theme(data: _studioThemes[look] ??= buildStudioTheme(look), child: Builder(builder: _build));
-  }
-
-  Widget _build(BuildContext context) {
     return LayoutBuilder(builder: (context, cons) {
       _cell = math.max(18.0, math.min((cons.maxWidth - 24) / level.w, cons.maxHeight * 0.7 / level.h));
       final left = level.moveLimit > 0 ? level.moveLimit - game.moves : null;
