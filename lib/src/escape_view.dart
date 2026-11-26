@@ -6,19 +6,36 @@ import 'package:studio_core/core/strings.dart';
 import 'package:studio_core/app/game_api.dart';
 import 'package:studio_core/app/services/audio.dart';
 import 'package:studio_core/core/game_rules.dart';
+import 'package:studio_core/app/studio_ui.dart';
 
 import 'escape_engine.dart';
 import 'escape_rules.dart';
 
-class EscapeView extends StatefulWidget {
+final Map<StudioLook, ThemeData> _studioThemes = {};
+
+/// Oyun ekranı: düğmeler, çipler, üst bilgi ve pencereler onaylı koyu
+/// tasarımda (merkezin paleti, studio-core StudioLook); tahta çizimi kendi
+/// renklerini korur.
+class EscapeView extends StatelessWidget {
   final PlayContext ctx;
   const EscapeView({super.key, required this.ctx});
 
   @override
-  State<EscapeView> createState() => _EscapeViewState();
+  Widget build(BuildContext context) {
+    final look = StudioLook.of(context);
+    return Theme(data: _studioThemes[look] ??= buildStudioTheme(look), child: EscapeViewBody(ctx: ctx));
+  }
 }
 
-class _EscapeViewState extends State<EscapeView> {
+class EscapeViewBody extends StatefulWidget {
+  final PlayContext ctx;
+  const EscapeViewBody({super.key, required this.ctx});
+
+  @override
+  State<EscapeViewBody> createState() => _EscapeViewState();
+}
+
+class _EscapeViewState extends State<EscapeViewBody> {
   late EscapeLevel level;
   late EscapeGame game;
   int? _hint;
